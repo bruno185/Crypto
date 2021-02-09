@@ -1,0 +1,436 @@
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+ Line | # File        Line | Line Type   | MX |  Reloc  | Size | Address   Object Code |  Source Code                                                      
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
+    1 |  1 gpopen.s      1 | Comment     | 11 |         |    0 | 00/8000               | * * * * * * * * * * * * * *
+    2 |  1 gpopen.s      2 | Comment     | 11 |         |    0 | 00/8000               | *           GP            *
+    3 |  1 gpopen.s      3 | Comment     | 11 |         |    0 | 00/8000               | * * * * * * * * * * * * * *
+    4 |  1 gpopen.s      4 | Empty       | 11 |         |    0 | 00/8000               |                                    
+    5 |  1 gpopen.s      5 | Comment     | 11 |         |    0 | 00/8000               | * Algo :
+    6 |  1 gpopen.s      6 | Comment     | 11 |         |    0 | 00/8000               | * - Get_prefix
+    7 |  1 gpopen.s      7 | Comment     | 11 |         |    0 | 00/8000               | * - if prefix not null = > all is right, exit.
+    8 |  1 gpopen.s      8 | Comment     | 11 |         |    0 | 00/8000               | * - if prefix null (length =0) : extract vol. from $280
+    9 |  1 gpopen.s      9 | Comment     | 11 |         |    0 | 00/8000               | * - Set_prfix with it
+   10 |  1 gpopen.s     10 | Comment     | 11 |         |    0 | 00/8000               | *
+   11 |  1 gpopen.s     11 | Comment     | 11 |         |    0 | 00/8000               | *
+   12 |  1 gpopen.s     12 | Equivalence | 11 |         |    0 | 00/8000               | MLI         equ     $BF00          
+   13 |  1 gpopen.s     13 | Equivalence | 11 |         |    0 | 00/8000               | online      equ     $C5            
+   14 |  1 gpopen.s     14 | Equivalence | 11 |         |    0 | 00/8000               | open        equ     $C8            
+   15 |  1 gpopen.s     15 | Equivalence | 11 |         |    0 | 00/8000               | close       equ     $CC            
+   16 |  1 gpopen.s     16 | Equivalence | 11 |         |    0 | 00/8000               | geteof      equ     $D1            
+   17 |  1 gpopen.s     17 | Equivalence | 11 |         |    0 | 00/8000               | read        equ     $CA            
+   18 |  1 gpopen.s     18 | Equivalence | 11 |         |    0 | 00/8000               | getprefix   equ     $C7            
+   19 |  1 gpopen.s     19 | Equivalence | 11 |         |    0 | 00/8000               | setprefix   equ     $C6            
+   20 |  1 gpopen.s     20 | Equivalence | 11 |         |    0 | 00/8000               | home        equ     $FC58          
+   21 |  1 gpopen.s     21 | Equivalence | 11 |         |    0 | 00/8000               | text        equ     $FB2F          
+   22 |  1 gpopen.s     22 | Equivalence | 11 |         |    0 | 00/8000               | col80off    equ     $C00C          
+   23 |  1 gpopen.s     23 | Equivalence | 11 |         |    0 | 00/8000               | cout        equ     $FDED          
+   24 |  1 gpopen.s     24 | Equivalence | 11 |         |    0 | 00/8000               | ptr         equ     $06            
+   25 |  1 gpopen.s     25 | Equivalence | 11 |         |    0 | 00/8000               | cv          equ     $25            
+   26 |  1 gpopen.s     26 | Equivalence | 11 |         |    0 | 00/8000               | ch          equ     $24            
+   27 |  1 gpopen.s     27 | Equivalence | 11 |         |    0 | 00/8000               | cr          equ     $FD8E          ; print carriage return
+   28 |  1 gpopen.s     28 | Equivalence | 11 |         |    0 | 00/8000               | vtab        equ     $FC22          
+   29 |  1 gpopen.s     29 | Equivalence | 11 |         |    0 | 00/8000               | wndlft      equ     $20            
+   30 |  1 gpopen.s     30 | Equivalence | 11 |         |    0 | 00/8000               | wndwdth     equ     $21            
+   31 |  1 gpopen.s     31 | Equivalence | 11 |         |    0 | 00/8000               | wndtop      equ     $22            
+   32 |  1 gpopen.s     32 | Equivalence | 11 |         |    0 | 00/8000               | wndbtm      equ     $23            
+   33 |  1 gpopen.s     33 | Equivalence | 11 |         |    0 | 00/8000               | prompt      equ     $33            
+   34 |  1 gpopen.s     34 | Equivalence | 11 |         |    0 | 00/8000               | getln       equ     $FD6A          
+   35 |  1 gpopen.s     35 | Equivalence | 11 |         |    0 | 00/8000               | tohex       equ     $F944          ; Prints current contents of X register in hexadecimal
+   36 |  1 gpopen.s     36 | Comment     | 11 |         |    0 | 00/8000               | *
+   37 |  1 gpopen.s     37 | Equivalence | 11 |         |    0 | 00/8000               | buffer      equ     $5000          
+   38 |  1 gpopen.s     38 | Equivalence | 11 |         |    0 | 00/8000               | outbuf      equ     $8000          
+   39 |  1 gpopen.s     39 | Empty       | 11 |         |    0 | 00/8000               |                                    
+   40 |  1 gpopen.s     40 | Equivalence | 11 |         |    0 | 00/8000               | fullpath    equ     $280           
+   41 |  1 gpopen.s     41 | Empty       | 11 |         |    0 | 00/8000               |                                    
+   42 |  1 gpopen.s     42 | Comment     | 11 |         |    0 | 00/8000               | ********** Macros **********
+   43 |  1 gpopen.s     43 | Directive   | 11 |         |    0 | 00/8000               | print       MAC                    ; dispaly string with 0 at the end
+   44 |  1 gpopen.s     44 | Directive   | 11 |         |    0 | 00/8000               |             ldx     #$00           
+   45 |  1 gpopen.s     45 | Directive   | 11 |         |    0 | 00/8000               | boucle      lda     ]1,X           
+   46 |  1 gpopen.s     46 | Directive   | 11 |         |    0 | 00/8000               |             beq     finm           
+   47 |  1 gpopen.s     47 | Directive   | 11 |         |    0 | 00/8000               |             ora     #$80           ; normal
+   48 |  1 gpopen.s     48 | Directive   | 11 |         |    0 | 00/8000               |             jsr     {$FDED}        
+   49 |  1 gpopen.s     49 | Directive   | 11 |         |    0 | 00/8000               |             inx                    
+   50 |  1 gpopen.s     50 | Directive   | 11 |         |    0 | 00/8000               |             bra     boucle         
+   51 |  1 gpopen.s     51 | Directive   | 11 |         |    0 | 00/8000               | finm        EOM                    
+   52 |  1 gpopen.s     52 | Comment     | 11 |         |    0 | 00/8000               | *
+   53 |  1 gpopen.s     53 | Directive   | 11 |         |    0 | 00/8000               | prnstr      MAC                    ; display a sting with length in first byte
+   54 |  1 gpopen.s     54 | Directive   | 11 |         |    0 | 00/8000               |             ldx     #$00           
+   55 |  1 gpopen.s     55 | Directive   | 11 |         |    0 | 00/8000               |             ldx     ]1             ; get length
+   56 |  1 gpopen.s     56 | Directive   | 11 |         |    0 | 00/8000               |             ldy     #$00           
+   57 |  1 gpopen.s     57 | Directive   | 11 |         |    0 | 00/8000               | loopstr     lda     ]1+1,y         
+   58 |  1 gpopen.s     58 | Directive   | 11 |         |    0 | 00/8000               |             beq     finstr         
+   59 |  1 gpopen.s     59 | Directive   | 11 |         |    0 | 00/8000               |             ora     #$80           ; normal
+   60 |  1 gpopen.s     60 | Directive   | 11 |         |    0 | 00/8000               |             jsr     {$FDED}        
+   61 |  1 gpopen.s     61 | Directive   | 11 |         |    0 | 00/8000               |             iny                    
+   62 |  1 gpopen.s     62 | Directive   | 11 |         |    0 | 00/8000               |             dex                    
+   63 |  1 gpopen.s     63 | Directive   | 11 |         |    0 | 00/8000               |             bne     loopstr        
+   64 |  1 gpopen.s     64 | Directive   | 11 |         |    0 | 00/8000               | finstr      EOM                    
+   65 |  1 gpopen.s     65 | Comment     | 11 |         |    0 | 00/8000               | *
+   66 |  1 gpopen.s     66 | Directive   | 11 |         |    0 | 00/8000               | cr          MAC                    
+   67 |  1 gpopen.s     67 | Directive   | 11 |         |    0 | 00/8000               |             lda     #$8D           
+   68 |  1 gpopen.s     68 | Directive   | 11 |         |    0 | 00/8000               |             jsr     {$FDED}        
+   69 |  1 gpopen.s     69 | Directive   | 11 |         |    0 | 00/8000               |             EOM                    
+   70 |  1 gpopen.s     70 | Comment     | 11 |         |    0 | 00/8000               | *
+   71 |  1 gpopen.s     71 | Comment     | 11 |         |    0 | 00/8000               | ******* Fin macros *******
+   72 |  1 gpopen.s     72 | Comment     | 11 |         |    0 | 00/8000               | *
+   73 |  1 gpopen.s     73 | Comment     | 11 |         |    0 | 00/8000               | *
+   74 |  1 gpopen.s     74 | Comment     | 11 |         |    0 | 00/8000               | ******* Variables *******
+   75 |  1 gpopen.s     75 | Directive   | 11 |         |    0 | 00/8000               |             org     $4000          
+   76 |  1 gpopen.s     76 | Code        | 11 |         |    3 | 00/4000 : 4C 26 41    |             jmp     main           
+   77 |  1 gpopen.s     77 | Comment     | 11 |         |    0 | 00/4003               | *
+   78 |  1 gpopen.s     78 | Data        | 11 |         |    1 | 00/4003 : 01          | getpfp      hex     01             ; get_prefix param.
+   79 |  1 gpopen.s     79 | Data        | 11 |         |    2 | 00/4004 : 00 50       |             da      {$5000}        ; prefix buffer at $5000
+   80 |  1 gpopen.s     80 | Comment     | 11 |         |    0 | 00/4006               | *
+   81 |  1 gpopen.s     81 | Data        | 11 |         |    1 | 00/4006 : 01          | setpfp      hex     01             ; set_prefix param.
+   82 |  1 gpopen.s     82 | Data        | 11 |         |    2 | 00/4007 : 16 40       | newpf       da      pfx            
+   83 |  1 gpopen.s     83 | Comment     | 11 |         |    0 | 00/4009               | *
+   84 |  1 gpopen.s     84 | Data        | 11 |         |    1 | 00/4009 : 03          | openp       hex     03             ; OPEN
+   85 |  1 gpopen.s     85 | Data        | 11 |         |    2 | 00/400A : 11 40       | path        da      filename       ;  file name adress
+   86 |  1 gpopen.s     86 | Data        | 11 |         |    2 | 00/400C : 00 80       | buff        da      {$8000}        ; file buff.
+   87 |  1 gpopen.s     87 | Data        | 11 |         |    1 | 00/400E : 00          | ref         hex     00             ; ref du fichier
+   88 |  1 gpopen.s     88 | Comment     | 11 |         |    0 | 00/400F               | *
+   89 |  1 gpopen.s     89 | Data        | 11 |         |    1 | 00/400F : 01          | closep      hex     01             ; CLOSE
+   90 |  1 gpopen.s     90 | Data        | 11 |         |    1 | 00/4010 : 00          | closeref    hex     00             
+   91 |  1 gpopen.s     91 | Comment     | 11 |         |    0 | 00/4011               | *
+   92 |  1 gpopen.s     92 | Comment     | 11 |         |    0 | 00/4011               | *
+   93 |  1 gpopen.s     93 | Data        | 11 |         |    1 | 00/4011 : 04          | filename    hex     04             
+   94 |  1 gpopen.s     94 | Data        | 11 |         |    4 | 00/4012 : D4 CF D4 CF |             asc     "TOTO"         
+   95 |  1 gpopen.s     95 | Comment     | 11 |         |    0 | 00/4016               | *
+   96 |  1 gpopen.s     96 | Data        | 11 |         |   64 | 00/4016 : 00 00 00 00 | pfx         ds      64,00          ; storage for prefix string
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+      |                    |             |    |         |      |           00 00 00 00 |
+   97 |  1 gpopen.s     97 | Comment     | 11 |         |    0 | 00/4056               | *
+   98 |  1 gpopen.s     98 | Data        | 11 |         |   14 | 00/4056 : C7 E5 F4 A0 | gpOK        asc     "Get prefix OK."
+      |                    |             |    |         |      |           F0 F2 E5 E6 |
+      |                    |             |    |         |      |           E9 F8 A0 CF |
+      |                    |             |    |         |      |           CB AE       |
+   99 |  1 gpopen.s     99 | Data        | 11 |         |    2 | 00/4064 : 8D 00       |             hex     8D00           
+  100 |  1 gpopen.s    100 | Data        | 11 |         |   18 | 00/4066 : C7 E5 F4 A0 | gpKO        asc     "Get prefix not OK."
+      |                    |             |    |         |      |           F0 F2 E5 E6 |
+      |                    |             |    |         |      |           E9 F8 A0 EE |
+      |                    |             |    |         |      |           EF F4 A0 CF |
+      |                    |             |    |         |      |           CB AE       |
+  101 |  1 gpopen.s    101 | Data        | 11 |         |    2 | 00/4078 : 8D 00       |             hex     8D00           
+  102 |  1 gpopen.s    102 | Data        | 11 |         |   15 | 00/407A : AA AA AA AA | begin       asc     "**** START ****"
+      |                    |             |    |         |      |           A0 D3 D4 C1 |
+      |                    |             |    |         |      |           D2 D4 A0 AA |
+      |                    |             |    |         |      |           AA AA AA    |
+  103 |  1 gpopen.s    103 | Data        | 11 |         |    2 | 00/4089 : 8D 00       |             hex     8D00           
+  104 |  1 gpopen.s    104 | Data        | 11 |         |   13 | 00/408B : D0 F2 E5 E6 | gpempty     asc     "Prefix empty."
+      |                    |             |    |         |      |           E9 F8 A0 E5 |
+      |                    |             |    |         |      |           ED F0 F4 F9 |
+      |                    |             |    |         |      |           AE          |
+  105 |  1 gpopen.s    105 | Data        | 11 |         |    2 | 00/4098 : 8D 00       |             hex     8D00           
+  106 |  1 gpopen.s    106 | Data        | 11 |         |   15 | 00/409A : D0 E1 F4 E8 | path280     asc     "Path at $280 : "
+      |                    |             |    |         |      |           A0 E1 F4 A0 |
+      |                    |             |    |         |      |           A4 B2 B8 B0 |
+      |                    |             |    |         |      |           A0 BA A0    |
+  107 |  1 gpopen.s    107 | Data        | 11 |         |    1 | 00/40A9 : 00          |             hex     00             
+  108 |  1 gpopen.s    108 | Data        | 11 |         |   15 | 00/40AA : D0 E1 F4 E8 | extpf       asc     "Path extract : "
+      |                    |             |    |         |      |           A0 E5 F8 F4 |
+      |                    |             |    |         |      |           F2 E1 E3 F4 |
+      |                    |             |    |         |      |           A0 BA A0    |
+  109 |  1 gpopen.s    109 | Data        | 11 |         |    1 | 00/40B9 : 00          |             hex     00             
+  110 |  1 gpopen.s    110 | Data        | 11 |         |   13 | 00/40BA : D3 E5 F4 A0 | spOK        asc     "Set prefix OK"
+      |                    |             |    |         |      |           F0 F2 E5 E6 |
+      |                    |             |    |         |      |           E9 F8 A0 CF |
+      |                    |             |    |         |      |           CB          |
+  111 |  1 gpopen.s    111 | Data        | 11 |         |    2 | 00/40C7 : 8D 00       |             hex     8D00           
+  112 |  1 gpopen.s    112 | Data        | 11 |         |   18 | 00/40C9 : D3 E5 F4 A0 | spKO        asc     "Set prefix not OK."
+      |                    |             |    |         |      |           F0 F2 E5 E6 |
+      |                    |             |    |         |      |           E9 F8 A0 EE |
+      |                    |             |    |         |      |           EF F4 A0 CF |
+      |                    |             |    |         |      |           CB AE       |
+  113 |  1 gpopen.s    113 | Data        | 11 |         |    2 | 00/40DB : 8D 00       |             hex     8D00           
+  114 |  1 gpopen.s    114 | Data        | 11 |         |   13 | 00/40DD : CF F0 E5 EE | openOK      asc     "Open file OK."
+      |                    |             |    |         |      |           A0 E6 E9 EC |
+      |                    |             |    |         |      |           E5 A0 CF CB |
+      |                    |             |    |         |      |           AE          |
+  115 |  1 gpopen.s    115 | Data        | 11 |         |    2 | 00/40EA : 8D 00       |             hex     8D00           
+  116 |  1 gpopen.s    116 | Data        | 11 |         |   17 | 00/40EC : CF F0 E5 EE | openKO      asc     "Open file not OK."
+      |                    |             |    |         |      |           A0 E6 E9 EC |
+      |                    |             |    |         |      |           E5 A0 EE EF |
+      |                    |             |    |         |      |           F4 A0 CF CB |
+      |                    |             |    |         |      |           AE          |
+  117 |  1 gpopen.s    117 | Data        | 11 |         |    2 | 00/40FD : 8D 00       |             hex     8D00           
+  118 |  1 gpopen.s    118 | Data        | 11 |         |   14 | 00/40FF : C3 EC EF F3 | closeOK     asc     "Close file OK."
+      |                    |             |    |         |      |           E5 A0 E6 E9 |
+      |                    |             |    |         |      |           EC E5 A0 CF |
+      |                    |             |    |         |      |           CB AE       |
+  119 |  1 gpopen.s    119 | Data        | 11 |         |    2 | 00/410D : 8D 00       |             hex     8D00           
+  120 |  1 gpopen.s    120 | Data        | 11 |         |   18 | 00/410F : C3 EC EF F3 | closeKO     asc     "Close file not OK."
+      |                    |             |    |         |      |           E5 A0 E6 E9 |
+      |                    |             |    |         |      |           EC E5 A0 EE |
+      |                    |             |    |         |      |           EF F4 A0 CF |
+      |                    |             |    |         |      |           CB AE       |
+  121 |  1 gpopen.s    121 | Data        | 11 |         |    2 | 00/4121 : 8D 00       |             hex     8D00           
+  122 |  1 gpopen.s    122 | Comment     | 11 |         |    0 | 00/4123               | *
+  123 |  1 gpopen.s    123 | Comment     | 11 |         |    0 | 00/4123               | *
+  124 |  1 gpopen.s    124 | Data        | 11 |         |    1 | 00/4123 : 00          | long        hex     00             ; length of fullpath
+  125 |  1 gpopen.s    125 | Data        | 11 |         |    1 | 00/4124 : 00          | nbslash     hex     00             ; / counter
+  126 |  1 gpopen.s    126 | Data        | 11 |         |    1 | 00/4125 : 00          | long2       hex     00             ; new prefix length
+  127 |  1 gpopen.s    127 | Comment     | 11 |         |    0 | 00/4126               | *
+  128 |  1 gpopen.s    128 | Comment     | 11 |         |    0 | 00/4126               | *
+  129 |  1 gpopen.s    129 | Comment     | 11 |         |    0 | 00/4126               | *
+  130 |  1 gpopen.s    130 | Comment     | 11 |         |    0 | 00/4126               | ******* START *******
+  131 |  1 gpopen.s    131 | Comment     | 11 |         |    0 | 00/4126               | * 
+  132 |  1 gpopen.s    132 | Code        | 11 |         |    1 | 00/4126 : EA          | main        nop                    
+  133 |  1 gpopen.s    133 | Macro       | 11 |         |    0 | 00/4127               |             cr                     
+  134 |  1 gpopen.s    133 | Code        | 11 |         |    2 | 00/4127 : A9 8D       |             lda     #$8D           
+  135 |  1 gpopen.s    133 | Code        | 11 |         |    3 | 00/4129 : 20 ED FD    |             jsr     {$FDED}        
+  136 |  1 gpopen.s    134 | Macro       | 11 |         |    0 | 00/412C               |             print   begin          
+  137 |  1 gpopen.s    134 | Code        | 11 |         |    2 | 00/412C : A2 00       |             ldx     #$00           
+  138 |  1 gpopen.s    134 | Code        | 11 |         |    3 | 00/412E : BD 7A 40    | ozunid_1    lda     begin,X        
+  139 |  1 gpopen.s    134 | Code        | 11 |         |    2 | 00/4131 : F0 08       |             beq     ozunid_2       
+  140 |  1 gpopen.s    134 | Code        | 11 |         |    2 | 00/4133 : 09 80       |             ora     #$80           ; normal
+  141 |  1 gpopen.s    134 | Code        | 11 |         |    3 | 00/4135 : 20 ED FD    |             jsr     {$FDED}        
+  142 |  1 gpopen.s    134 | Code        | 11 |         |    1 | 00/4138 : E8          |             inx                    
+  143 |  1 gpopen.s    134 | Code        | 11 |         |    2 | 00/4139 : 80 F3       |             bra     ozunid_1       
+  144 |  1 gpopen.s    134 | Empty       | 11 |         |    0 | 00/413B               | ozunid_2                           
+  145 |  1 gpopen.s    135 | Code        | 11 |         |    3 | 00/413B : 20 00 BF    | gp          jsr     {$BF00}        ; Go get prefix !!
+  146 |  1 gpopen.s    136 | Data        | 11 |         |    1 | 00/413E : C7          |             dfb     {$C7}          
+  147 |  1 gpopen.s    137 | Data        | 11 |         |    2 | 00/413F : 03 40       |             da      getpfp         
+  148 |  1 gpopen.s    138 | Code        | 11 |         |    2 | 00/4141 : C9 00       |             cmp     #$00           ; ok ?
+  149 |  1 gpopen.s    139 | Code        | 11 |         |    2 | 00/4143 : F0 03       |             beq     suitesp        
+  150 |  1 gpopen.s    140 | Code        | 11 |         |    3 | 00/4145 : 4C 92 41    |             jmp     break          ; errot in get_prefix : exit.
+  151 |  1 gpopen.s    141 | Macro       | 11 |         |    0 | 00/4148               | suitesp     print   gpOK           
+  152 |  1 gpopen.s    141 | Code        | 11 |         |    2 | 00/4148 : A2 00       |             ldx     #$00           
+  153 |  1 gpopen.s    141 | Code        | 11 |         |    3 | 00/414A : BD 56 40    | ozunid_3    lda     gpOK,X         
+  154 |  1 gpopen.s    141 | Code        | 11 |         |    2 | 00/414D : F0 08       |             beq     ozunid_4       
+  155 |  1 gpopen.s    141 | Code        | 11 |         |    2 | 00/414F : 09 80       |             ora     #$80           ; normal
+  156 |  1 gpopen.s    141 | Code        | 11 |         |    3 | 00/4151 : 20 ED FD    |             jsr     {$FDED}        
+  157 |  1 gpopen.s    141 | Code        | 11 |         |    1 | 00/4154 : E8          |             inx                    
+  158 |  1 gpopen.s    141 | Code        | 11 |         |    2 | 00/4155 : 80 F3       |             bra     ozunid_3       
+  159 |  1 gpopen.s    141 | Empty       | 11 |         |    0 | 00/4157               | ozunid_4                           
+  160 |  1 gpopen.s    142 | Code        | 11 |         |    3 | 00/4157 : AD 00 50    |             lda     {$5000}        ; nill préfix ?
+  161 |  1 gpopen.s    143 | Code        | 11 |         |    2 | 00/415A : F0 1D       |             beq     empty          
+  162 |  1 gpopen.s    144 | Macro       | 11 |         |    0 | 00/415C               |             prnstr  {$5000}        ; prefix already set
+  163 |  1 gpopen.s    144 | Code        | 11 |         |    2 | 00/415C : A2 00       |             ldx     #$00           
+  164 |  1 gpopen.s    144 | Code        | 11 |         |    3 | 00/415E : AE 00 50    |             ldx     {$5000}        ; get length
+  165 |  1 gpopen.s    144 | Code        | 11 |         |    2 | 00/4161 : A0 00       |             ldy     #$00           
+  166 |  1 gpopen.s    144 | Code        | 11 |         |    3 | 00/4163 : B9 01 50    | ozunid_5    lda     {$5000}+1,y    
+  167 |  1 gpopen.s    144 | Code        | 11 |         |    2 | 00/4166 : F0 09       |             beq     ozunid_6       
+  168 |  1 gpopen.s    144 | Code        | 11 |         |    2 | 00/4168 : 09 80       |             ora     #$80           ; normal
+  169 |  1 gpopen.s    144 | Code        | 11 |         |    3 | 00/416A : 20 ED FD    |             jsr     {$FDED}        
+  170 |  1 gpopen.s    144 | Code        | 11 |         |    1 | 00/416D : C8          |             iny                    
+  171 |  1 gpopen.s    144 | Code        | 11 |         |    1 | 00/416E : CA          |             dex                    
+  172 |  1 gpopen.s    144 | Code        | 11 |         |    2 | 00/416F : D0 F2       |             bne     ozunid_5       
+  173 |  1 gpopen.s    144 | Empty       | 11 |         |    0 | 00/4171               | ozunid_6                           
+  174 |  1 gpopen.s    145 | Macro       | 11 |         |    0 | 00/4171               |             cr                     
+  175 |  1 gpopen.s    145 | Code        | 11 |         |    2 | 00/4171 : A9 8D       |             lda     #$8D           
+  176 |  1 gpopen.s    145 | Code        | 11 |         |    3 | 00/4173 : 20 ED FD    |             jsr     {$FDED}        
+  177 |  1 gpopen.s    146 | Code        | 11 |         |    3 | 00/4176 : 4C 8B 41    |             jmp     openclose      
+  178 |  1 gpopen.s    147 | Comment     | 11 |         |    0 | 00/4179               | *
+  179 |  1 gpopen.s    148 | Macro       | 11 |         |    0 | 00/4179               | empty       print   gpempty        
+  180 |  1 gpopen.s    148 | Code        | 11 |         |    2 | 00/4179 : A2 00       |             ldx     #$00           
+  181 |  1 gpopen.s    148 | Code        | 11 |         |    3 | 00/417B : BD 8B 40    | ozunid_7    lda     gpempty,X      
+  182 |  1 gpopen.s    148 | Code        | 11 |         |    2 | 00/417E : F0 08       |             beq     ozunid_8       
+  183 |  1 gpopen.s    148 | Code        | 11 |         |    2 | 00/4180 : 09 80       |             ora     #$80           ; normal
+  184 |  1 gpopen.s    148 | Code        | 11 |         |    3 | 00/4182 : 20 ED FD    |             jsr     {$FDED}        
+  185 |  1 gpopen.s    148 | Code        | 11 |         |    1 | 00/4185 : E8          |             inx                    
+  186 |  1 gpopen.s    148 | Code        | 11 |         |    2 | 00/4186 : 80 F3       |             bra     ozunid_7       
+  187 |  1 gpopen.s    148 | Empty       | 11 |         |    0 | 00/4188               | ozunid_8                           
+  188 |  1 gpopen.s    149 | Code        | 11 |         |    3 | 00/4188 : 20 A8 41    |             jsr     do280          ; get path in $280, extract and set prefix
+  189 |  1 gpopen.s    150 | Comment     | 11 |         |    0 | 00/418B               | *                       ; now open file and close it 
+  190 |  1 gpopen.s    151 | Code        | 11 |         |    3 | 00/418B : 20 6D 42    | openclose   jsr     openfile       
+  191 |  1 gpopen.s    152 | Code        | 11 |         |    3 | 00/418E : 20 95 42    |             jsr     closefile      
+  192 |  1 gpopen.s    153 | Code        | 11 |         |    1 | 00/4191 : 60          | fingp       rts                    ; END !
+  193 |  1 gpopen.s    154 | Comment     | 11 |         |    0 | 00/4192               | *
+  194 |  1 gpopen.s    155 | Code        | 11 |         |    1 | 00/4192 : 48          | break       pha                    
+  195 |  1 gpopen.s    156 | Macro       | 11 |         |    0 | 00/4193               |             print   gpKO           
+  196 |  1 gpopen.s    156 | Code        | 11 |         |    2 | 00/4193 : A2 00       |             ldx     #$00           
+  197 |  1 gpopen.s    156 | Code        | 11 |         |    3 | 00/4195 : BD 66 40    | ozunid_9    lda     gpKO,X         
+  198 |  1 gpopen.s    156 | Code        | 11 |         |    2 | 00/4198 : F0 08       |             beq     ozunid_10      
+  199 |  1 gpopen.s    156 | Code        | 11 |         |    2 | 00/419A : 09 80       |             ora     #$80           ; normal
+  200 |  1 gpopen.s    156 | Code        | 11 |         |    3 | 00/419C : 20 ED FD    |             jsr     {$FDED}        
+  201 |  1 gpopen.s    156 | Code        | 11 |         |    1 | 00/419F : E8          |             inx                    
+  202 |  1 gpopen.s    156 | Code        | 11 |         |    2 | 00/41A0 : 80 F3       |             bra     ozunid_9       
+  203 |  1 gpopen.s    156 | Empty       | 11 |         |    0 | 00/41A2               | ozunid_10                          
+  204 |  1 gpopen.s    157 | Code        | 11 |         |    1 | 00/41A2 : 68          |             pla                    
+  205 |  1 gpopen.s    158 | Code        | 11 |         |    1 | 00/41A3 : AA          |             tax                    
+  206 |  1 gpopen.s    159 | Code        | 11 |         |    3 | 00/41A4 : 20 44 F9    |             jsr     {$F944}        
+  207 |  1 gpopen.s    160 | Code        | 11 |         |    1 | 00/41A7 : 60          |             rts                    
+  208 |  1 gpopen.s    161 | Comment     | 11 |         |    0 | 00/41A8               | *
+  209 |  1 gpopen.s    162 | Code        | 11 |         |    1 | 00/41A8 : EA          | do280       nop                    ; Display string at $280
+  210 |  1 gpopen.s    163 | Code        | 11 |         |    3 | 00/41A9 : AD 80 02    |             lda     {$280}         
+  211 |  1 gpopen.s    164 | Code        | 11 |         |    2 | 00/41AC : F0 28       |             beq     exit           
+  212 |  1 gpopen.s    165 | Code        | 11 |         |    1 | 00/41AE : 48          |             pha                    
+  213 |  1 gpopen.s    166 | Macro       | 11 |         |    0 | 00/41AF               |             print   path280        
+  214 |  1 gpopen.s    166 | Code        | 11 |         |    2 | 00/41AF : A2 00       |             ldx     #$00           
+  215 |  1 gpopen.s    166 | Code        | 11 |         |    3 | 00/41B1 : BD 9A 40    | ozunid_11   lda     path280,X      
+  216 |  1 gpopen.s    166 | Code        | 11 |         |    2 | 00/41B4 : F0 08       |             beq     ozunid_12      
+  217 |  1 gpopen.s    166 | Code        | 11 |         |    2 | 00/41B6 : 09 80       |             ora     #$80           ; normal
+  218 |  1 gpopen.s    166 | Code        | 11 |         |    3 | 00/41B8 : 20 ED FD    |             jsr     {$FDED}        
+  219 |  1 gpopen.s    166 | Code        | 11 |         |    1 | 00/41BB : E8          |             inx                    
+  220 |  1 gpopen.s    166 | Code        | 11 |         |    2 | 00/41BC : 80 F3       |             bra     ozunid_11      
+  221 |  1 gpopen.s    166 | Empty       | 11 |         |    0 | 00/41BE               | ozunid_12                          
+  222 |  1 gpopen.s    167 | Code        | 11 |         |    1 | 00/41BE : 68          |             pla                    
+  223 |  1 gpopen.s    168 | Code        | 11 |         |    1 | 00/41BF : AA          |             tax                    
+  224 |  1 gpopen.s    169 | Code        | 11 |         |    2 | 00/41C0 : A0 00       |             ldy     #$00           
+  225 |  1 gpopen.s    170 | Code        | 11 |         |    3 | 00/41C2 : B9 81 02    | myloop      lda     {$280}+1,y     
+  226 |  1 gpopen.s    171 | Code        | 11 |         |    2 | 00/41C5 : 09 80       |             ora     #$80           
+  227 |  1 gpopen.s    172 | Code        | 11 |         |    3 | 00/41C7 : 20 ED FD    |             jsr     {$FDED}        
+  228 |  1 gpopen.s    173 | Code        | 11 |         |    1 | 00/41CA : C8          |             iny                    
+  229 |  1 gpopen.s    174 | Code        | 11 |         |    1 | 00/41CB : CA          |             dex                    
+  230 |  1 gpopen.s    175 | Code        | 11 |         |    2 | 00/41CC : D0 F4       |             bne     myloop         
+  231 |  1 gpopen.s    176 | Macro       | 11 |         |    0 | 00/41CE               |             cr                     
+  232 |  1 gpopen.s    176 | Code        | 11 |         |    2 | 00/41CE : A9 8D       |             lda     #$8D           
+  233 |  1 gpopen.s    176 | Code        | 11 |         |    3 | 00/41D0 : 20 ED FD    |             jsr     {$FDED}        
+  234 |  1 gpopen.s    177 | Code        | 11 |         |    3 | 00/41D3 : 20 D7 41    |             jsr     extract        
+  235 |  1 gpopen.s    178 | Code        | 11 |         |    1 | 00/41D6 : 60          | exit        rts                    
+  236 |  1 gpopen.s    179 | Comment     | 11 |         |    0 | 00/41D7               | *
+  237 |  1 gpopen.s    180 | Comment     | 11 |         |    0 | 00/41D7               | *
+  238 |  1 gpopen.s    181 | Code        | 11 |         |    1 | 00/41D7 : EA          | extract     nop                    
+  239 |  1 gpopen.s    182 | Code        | 11 |         |    2 | 00/41D8 : A0 00       |             ldy     #$00           ; get volume prefix from string at $280
+  240 |  1 gpopen.s    183 | Code        | 11 |         |    3 | 00/41DA : AD 80 02    |             lda     {$280}         ;
+  241 |  1 gpopen.s    184 | Code        | 11 |         |    3 | 00/41DD : 8D 23 41    |             sta     long           ; fullpath length
+  242 |  1 gpopen.s    185 | Comment     | 11 |         |    0 | 00/41E0               | *
+  243 |  1 gpopen.s    186 | Comment     | 11 |         |    0 | 00/41E0               | * count / in string at $280
+  244 |  1 gpopen.s    187 | Comment     | 11 |         |    0 | 00/41E0               | * to adjust prefix to current prefix 
+  245 |  1 gpopen.s    188 | Comment     | 11 |         |    0 | 00/41E0               | * = string at $280 minus program name at the end.
+  246 |  1 gpopen.s    189 | Comment     | 11 |         |    0 | 00/41E0               | * ex. : $280 : /data/src/myprog ==> prefix = /data/src
+  247 |  1 gpopen.s    190 | Code        | 11 |         |    1 | 00/41E0 : AA          |             tax                    ; init slash counter
+  248 |  1 gpopen.s    191 | Code        | 11 |         |    3 | 00/41E1 : BD 80 02    | loopcnt     lda     {$280},x       
+  249 |  1 gpopen.s    192 | Code        | 11 |         |    2 | 00/41E4 : C9 2F       |             cmp     #$2F           
+  250 |  1 gpopen.s    193 | Code        | 11 |         |    2 | 00/41E6 : D0 01       |             bne     slcnt          ; = / ?
+  251 |  1 gpopen.s    194 | Code        | 11 |         |    1 | 00/41E8 : C8          |             iny                    ; yes : slash counter++
+  252 |  1 gpopen.s    195 | Code        | 11 |         |    1 | 00/41E9 : CA          | slcnt       dex                    ; next char.
+  253 |  1 gpopen.s    196 | Code        | 11 |         |    2 | 00/41EA : D0 F5       |             bne     loopcnt        
+  254 |  1 gpopen.s    197 | Code        | 11 |         |    3 | 00/41EC : 8C FF 41    |             sty     selfcmp+1      ; modify cmp
+  255 |  1 gpopen.s    198 | Comment     | 11 |         |    0 | 00/41EF               | * end of count /
+  256 |  1 gpopen.s    199 | Comment     | 11 |         |    0 | 00/41EF               | *
+  257 |  1 gpopen.s    200 | Code        | 11 |         |    2 | 00/41EF : A0 00       |             ldy     #$00           
+  258 |  1 gpopen.s    201 | Code        | 11 |         |    3 | 00/41F1 : B9 81 02    | debloop     lda     {$280}+1,y     
+  259 |  1 gpopen.s    202 | Code        | 11 |         |    2 | 00/41F4 : C9 2F       |             cmp     #$2F           ; "/"  ?
+  260 |  1 gpopen.s    203 | Code        | 11 |         |    2 | 00/41F6 : D0 0A       |             bne     s1             ;
+  261 |  1 gpopen.s    204 | Code        | 11 |         |    3 | 00/41F8 : EE 24 41    |             inc     nbslash        
+  262 |  1 gpopen.s    205 | Code        | 11 |         |    3 | 00/41FB : AE 24 41    |             ldx     nbslash        
+  263 |  1 gpopen.s    206 | Code        | 11 |         |    2 | 00/41FE : E0 02       | selfcmp     cpx     #$02           ; 2 / ?
+  264 |  1 gpopen.s    207 | Code        | 11 |         |    2 | 00/4200 : F0 0F       |             beq     finloop        ; yes : end (sting is choped)
+  265 |  1 gpopen.s    208 | Code        | 11 |         |    3 | 00/4202 : 99 17 40    | s1          sta     pfx+1,y        ; strore in prefix
+  266 |  1 gpopen.s    209 | Code        | 11 |         |    3 | 00/4205 : EE 25 41    |             inc     long2          ; increase prefix length
+  267 |  1 gpopen.s    210 | Code        | 11 |         |    3 | 00/4208 : CE 23 41    |             dec     long           ; decrease max size (= fullpath size)
+  268 |  1 gpopen.s    211 | Code        | 11 |         |    2 | 00/420B : F0 04       |             beq     finloop        ; max size reached : end
+  269 |  1 gpopen.s    212 | Code        | 11 |         |    1 | 00/420D : C8          |             iny                    ; next byte
+  270 |  1 gpopen.s    213 | Code        | 11 |         |    3 | 00/420E : 4C F1 41    |             jmp     debloop        ; loop
+  271 |  1 gpopen.s    214 | Code        | 11 |         |    1 | 00/4211 : EA          | finloop     nop                    
+  272 |  1 gpopen.s    215 | Code        | 11 |         |    3 | 00/4212 : AD 25 41    |             lda     long2          ; prefix length
+  273 |  1 gpopen.s    216 | Code        | 11 |         |    3 | 00/4215 : 8D 16 40    |             sta     pfx            ; at the begining of the prefix
+  274 |  1 gpopen.s    217 | Macro       | 11 |         |    0 | 00/4218               |             print   extpf          
+  275 |  1 gpopen.s    217 | Code        | 11 |         |    2 | 00/4218 : A2 00       |             ldx     #$00           
+  276 |  1 gpopen.s    217 | Code        | 11 |         |    3 | 00/421A : BD AA 40    | ozunid_13   lda     extpf,X        
+  277 |  1 gpopen.s    217 | Code        | 11 |         |    2 | 00/421D : F0 08       |             beq     ozunid_14      
+  278 |  1 gpopen.s    217 | Code        | 11 |         |    2 | 00/421F : 09 80       |             ora     #$80           ; normal
+  279 |  1 gpopen.s    217 | Code        | 11 |         |    3 | 00/4221 : 20 ED FD    |             jsr     {$FDED}        
+  280 |  1 gpopen.s    217 | Code        | 11 |         |    1 | 00/4224 : E8          |             inx                    
+  281 |  1 gpopen.s    217 | Code        | 11 |         |    2 | 00/4225 : 80 F3       |             bra     ozunid_13      
+  282 |  1 gpopen.s    217 | Empty       | 11 |         |    0 | 00/4227               | ozunid_14                          
+  283 |  1 gpopen.s    218 | Macro       | 11 |         |    0 | 00/4227               |             prnstr  pfx            
+  284 |  1 gpopen.s    218 | Code        | 11 |         |    2 | 00/4227 : A2 00       |             ldx     #$00           
+  285 |  1 gpopen.s    218 | Code        | 11 |         |    3 | 00/4229 : AE 16 40    |             ldx     pfx            ; get length
+  286 |  1 gpopen.s    218 | Code        | 11 |         |    2 | 00/422C : A0 00       |             ldy     #$00           
+  287 |  1 gpopen.s    218 | Code        | 11 |         |    3 | 00/422E : B9 17 40    | ozunid_15   lda     pfx+1,y        
+  288 |  1 gpopen.s    218 | Code        | 11 |         |    2 | 00/4231 : F0 09       |             beq     ozunid_16      
+  289 |  1 gpopen.s    218 | Code        | 11 |         |    2 | 00/4233 : 09 80       |             ora     #$80           ; normal
+  290 |  1 gpopen.s    218 | Code        | 11 |         |    3 | 00/4235 : 20 ED FD    |             jsr     {$FDED}        
+  291 |  1 gpopen.s    218 | Code        | 11 |         |    1 | 00/4238 : C8          |             iny                    
+  292 |  1 gpopen.s    218 | Code        | 11 |         |    1 | 00/4239 : CA          |             dex                    
+  293 |  1 gpopen.s    218 | Code        | 11 |         |    2 | 00/423A : D0 F2       |             bne     ozunid_15      
+  294 |  1 gpopen.s    218 | Empty       | 11 |         |    0 | 00/423C               | ozunid_16                          
+  295 |  1 gpopen.s    219 | Code        | 11 |         |    3 | 00/423C : 20 40 42    |             jsr     sp             
+  296 |  1 gpopen.s    220 | Code        | 11 |         |    1 | 00/423F : 60          |             rts                    
+  297 |  1 gpopen.s    221 | Comment     | 11 |         |    0 | 00/4240               | *
+  298 |  1 gpopen.s    222 | Macro       | 11 |         |    0 | 00/4240               | sp          cr                     
+  299 |  1 gpopen.s    222 | Code        | 11 |         |    2 | 00/4240 : A9 8D       |             lda     #$8D           
+  300 |  1 gpopen.s    222 | Code        | 11 |         |    3 | 00/4242 : 20 ED FD    |             jsr     {$FDED}        
+  301 |  1 gpopen.s    223 | Code        | 11 |         |    3 | 00/4245 : 20 00 BF    |             jsr     {$BF00}        ; Set prefix !!
+  302 |  1 gpopen.s    224 | Data        | 11 |         |    1 | 00/4248 : C6          |             dfb     {$C6}          
+  303 |  1 gpopen.s    225 | Data        | 11 |         |    2 | 00/4249 : 06 40       |             da      setpfp         
+  304 |  1 gpopen.s    226 | Code        | 11 |         |    2 | 00/424B : D0 10       |             bne     doko           
+  305 |  1 gpopen.s    227 | Macro       | 11 |         |    0 | 00/424D               |             print   spOK           
+  306 |  1 gpopen.s    227 | Code        | 11 |         |    2 | 00/424D : A2 00       |             ldx     #$00           
+  307 |  1 gpopen.s    227 | Code        | 11 |         |    3 | 00/424F : BD BA 40    | ozunid_17   lda     spOK,X         
+  308 |  1 gpopen.s    227 | Code        | 11 |         |    2 | 00/4252 : F0 08       |             beq     ozunid_18      
+  309 |  1 gpopen.s    227 | Code        | 11 |         |    2 | 00/4254 : 09 80       |             ora     #$80           ; normal
+  310 |  1 gpopen.s    227 | Code        | 11 |         |    3 | 00/4256 : 20 ED FD    |             jsr     {$FDED}        
+  311 |  1 gpopen.s    227 | Code        | 11 |         |    1 | 00/4259 : E8          |             inx                    
+  312 |  1 gpopen.s    227 | Code        | 11 |         |    2 | 00/425A : 80 F3       |             bra     ozunid_17      
+  313 |  1 gpopen.s    227 | Empty       | 11 |         |    0 | 00/425C               | ozunid_18                          
+  314 |  1 gpopen.s    228 | Code        | 11 |         |    1 | 00/425C : 60          |             rts                    
+  315 |  1 gpopen.s    229 | Macro       | 11 |         |    0 | 00/425D               | doko        print   spKO           
+  316 |  1 gpopen.s    229 | Code        | 11 |         |    2 | 00/425D : A2 00       |             ldx     #$00           
+  317 |  1 gpopen.s    229 | Code        | 11 |         |    3 | 00/425F : BD C9 40    | ozunid_19   lda     spKO,X         
+  318 |  1 gpopen.s    229 | Code        | 11 |         |    2 | 00/4262 : F0 08       |             beq     ozunid_20      
+  319 |  1 gpopen.s    229 | Code        | 11 |         |    2 | 00/4264 : 09 80       |             ora     #$80           ; normal
+  320 |  1 gpopen.s    229 | Code        | 11 |         |    3 | 00/4266 : 20 ED FD    |             jsr     {$FDED}        
+  321 |  1 gpopen.s    229 | Code        | 11 |         |    1 | 00/4269 : E8          |             inx                    
+  322 |  1 gpopen.s    229 | Code        | 11 |         |    2 | 00/426A : 80 F3       |             bra     ozunid_19      
+  323 |  1 gpopen.s    229 | Empty       | 11 |         |    0 | 00/426C               | ozunid_20                          
+  324 |  1 gpopen.s    230 | Code        | 11 |         |    1 | 00/426C : 60          |             rts                    
+  325 |  1 gpopen.s    231 | Comment     | 11 |         |    0 | 00/426D               | *
+  326 |  1 gpopen.s    232 | Code        | 11 |         |    3 | 00/426D : 20 00 BF    | openfile    jsr     {$BF00}        ; Go OPEN !!
+  327 |  1 gpopen.s    233 | Data        | 11 |         |    1 | 00/4270 : C8          |             dfb     {$C8}          
+  328 |  1 gpopen.s    234 | Data        | 11 |         |    2 | 00/4271 : 09 40       |             da      openp          
+  329 |  1 gpopen.s    235 | Code        | 11 |         |    2 | 00/4273 : 90 10       |             bcc     finopen        
+  330 |  1 gpopen.s    236 | Macro       | 11 |         |    0 | 00/4275               |             print   openKO         
+  331 |  1 gpopen.s    236 | Code        | 11 |         |    2 | 00/4275 : A2 00       |             ldx     #$00           
+  332 |  1 gpopen.s    236 | Code        | 11 |         |    3 | 00/4277 : BD EC 40    | ozunid_21   lda     openKO,X       
+  333 |  1 gpopen.s    236 | Code        | 11 |         |    2 | 00/427A : F0 08       |             beq     ozunid_22      
+  334 |  1 gpopen.s    236 | Code        | 11 |         |    2 | 00/427C : 09 80       |             ora     #$80           ; normal
+  335 |  1 gpopen.s    236 | Code        | 11 |         |    3 | 00/427E : 20 ED FD    |             jsr     {$FDED}        
+  336 |  1 gpopen.s    236 | Code        | 11 |         |    1 | 00/4281 : E8          |             inx                    
+  337 |  1 gpopen.s    236 | Code        | 11 |         |    2 | 00/4282 : 80 F3       |             bra     ozunid_21      
+  338 |  1 gpopen.s    236 | Empty       | 11 |         |    0 | 00/4284               | ozunid_22                          
+  339 |  1 gpopen.s    237 | Code        | 11 |         |    1 | 00/4284 : 60          |             rts                    
+  340 |  1 gpopen.s    238 | Macro       | 11 |         |    0 | 00/4285               | finopen     print   openOK         
+  341 |  1 gpopen.s    238 | Code        | 11 |         |    2 | 00/4285 : A2 00       |             ldx     #$00           
+  342 |  1 gpopen.s    238 | Code        | 11 |         |    3 | 00/4287 : BD DD 40    | ozunid_23   lda     openOK,X       
+  343 |  1 gpopen.s    238 | Code        | 11 |         |    2 | 00/428A : F0 08       |             beq     ozunid_24      
+  344 |  1 gpopen.s    238 | Code        | 11 |         |    2 | 00/428C : 09 80       |             ora     #$80           ; normal
+  345 |  1 gpopen.s    238 | Code        | 11 |         |    3 | 00/428E : 20 ED FD    |             jsr     {$FDED}        
+  346 |  1 gpopen.s    238 | Code        | 11 |         |    1 | 00/4291 : E8          |             inx                    
+  347 |  1 gpopen.s    238 | Code        | 11 |         |    2 | 00/4292 : 80 F3       |             bra     ozunid_23      
+  348 |  1 gpopen.s    238 | Empty       | 11 |         |    0 | 00/4294               | ozunid_24                          
+  349 |  1 gpopen.s    239 | Code        | 11 |         |    1 | 00/4294 : 60          |             rts                    
+  350 |  1 gpopen.s    240 | Empty       | 11 |         |    0 | 00/4295               |                                    
+  351 |  1 gpopen.s    241 | Code        | 11 |         |    3 | 00/4295 : 20 00 BF    | closefile   jsr     {$BF00}        ; go CLOSE !!
+  352 |  1 gpopen.s    242 | Data        | 11 |         |    1 | 00/4298 : CC          |             dfb     {$CC}          
+  353 |  1 gpopen.s    243 | Data        | 11 |         |    2 | 00/4299 : 0F 40       |             da      closep         
+  354 |  1 gpopen.s    244 | Code        | 11 |         |    2 | 00/429B : 90 10       |             bcc     finclose       
+  355 |  1 gpopen.s    245 | Macro       | 11 |         |    0 | 00/429D               |             print   closeKO        
+  356 |  1 gpopen.s    245 | Code        | 11 |         |    2 | 00/429D : A2 00       |             ldx     #$00           
+  357 |  1 gpopen.s    245 | Code        | 11 |         |    3 | 00/429F : BD 0F 41    | ozunid_25   lda     closeKO,X      
+  358 |  1 gpopen.s    245 | Code        | 11 |         |    2 | 00/42A2 : F0 08       |             beq     ozunid_26      
+  359 |  1 gpopen.s    245 | Code        | 11 |         |    2 | 00/42A4 : 09 80       |             ora     #$80           ; normal
+  360 |  1 gpopen.s    245 | Code        | 11 |         |    3 | 00/42A6 : 20 ED FD    |             jsr     {$FDED}        
+  361 |  1 gpopen.s    245 | Code        | 11 |         |    1 | 00/42A9 : E8          |             inx                    
+  362 |  1 gpopen.s    245 | Code        | 11 |         |    2 | 00/42AA : 80 F3       |             bra     ozunid_25      
+  363 |  1 gpopen.s    245 | Empty       | 11 |         |    0 | 00/42AC               | ozunid_26                          
+  364 |  1 gpopen.s    246 | Code        | 11 |         |    1 | 00/42AC : 60          |             rts                    
+  365 |  1 gpopen.s    247 | Macro       | 11 |         |    0 | 00/42AD               | finclose    print   closeOK        
+  366 |  1 gpopen.s    247 | Code        | 11 |         |    2 | 00/42AD : A2 00       |             ldx     #$00           
+  367 |  1 gpopen.s    247 | Code        | 11 |         |    3 | 00/42AF : BD FF 40    | ozunid_27   lda     closeOK,X      
+  368 |  1 gpopen.s    247 | Code        | 11 |         |    2 | 00/42B2 : F0 08       |             beq     ozunid_28      
+  369 |  1 gpopen.s    247 | Code        | 11 |         |    2 | 00/42B4 : 09 80       |             ora     #$80           ; normal
+  370 |  1 gpopen.s    247 | Code        | 11 |         |    3 | 00/42B6 : 20 ED FD    |             jsr     {$FDED}        
+  371 |  1 gpopen.s    247 | Code        | 11 |         |    1 | 00/42B9 : E8          |             inx                    
+  372 |  1 gpopen.s    247 | Code        | 11 |         |    2 | 00/42BA : 80 F3       |             bra     ozunid_27      
+  373 |  1 gpopen.s    247 | Empty       | 11 |         |    0 | 00/42BC               | ozunid_28                          
+  374 |  1 gpopen.s    248 | Code        | 11 |         |    1 | 00/42BC : 60          |             rts                    
+  375 |  1 gpopen.s    249 | Empty       | 11 |         |    0 | 00/42BD               |                                    
+  376 |  1 gpopen.s    250 | Empty       | 11 |         |    0 | 00/42BD               |                                    
+  377 |  1 gpopen.s    251 | Empty       | 11 |         |    0 | 00/42BD               |                                    
+------+--------------------+-------------+----+---------+------+-----------------------+-------------------------------------------------------------------
